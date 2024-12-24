@@ -36,6 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
-### 환경변후 ###
+### 환경변수 ###
 .env
 
+application-secret.yml
