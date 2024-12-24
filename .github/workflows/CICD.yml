@@ -5,7 +5,7 @@ name: CI/CD using github actions & docker
 # main브랜치에 pull request가 발생 되었을 때 실행
 on:
   pull_request:
-    branches: [ "master" ]
+    branches: [ "dev" ]
   push:
     branches: [ "master" ]
 
