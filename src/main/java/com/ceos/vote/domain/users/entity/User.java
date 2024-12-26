@@ -2,10 +2,7 @@ package com.ceos.vote.domain.users.entity;
 
 import com.ceos.vote.global.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +13,10 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
-@Table(name = "user")
+@Table(name = "USER")
+@Builder
 public class User extends BaseEntity implements UserDetails {
 
     @Id
@@ -25,13 +24,21 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_id", updatable = false)
     private Long id;
 
-   @Column(name = "email", nullable = false, unique = true)
+    @Column(name="name")
+    private String name;
+
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Builder
+    @Column(name="user_team")
+    private String userTeam;
+
+    @Column(name="user_part")
+    private String userPart;
+
     public User(String email, String password, String auth) {
         this.email = email;
         this.password = password;
