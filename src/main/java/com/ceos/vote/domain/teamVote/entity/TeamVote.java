@@ -1,6 +1,6 @@
-package com.ceos.vote.domain.leaderVote.entity;
+package com.ceos.vote.domain.teamVote.entity;
 
-import com.ceos.vote.domain.leaderCandidate.entity.LeaderCandidate;
+import com.ceos.vote.domain.teamCandidate.entity.TeamCandidate;
 import com.ceos.vote.domain.users.entity.Users;
 import com.ceos.vote.global.BaseEntity;
 import jakarta.persistence.*;
@@ -9,15 +9,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class LeaderVote extends BaseEntity {
+public class TeamVote extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "leader_vote_id")
+    @Column(name = "team_vote_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,16 +24,16 @@ public class LeaderVote extends BaseEntity {
     private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "leader_candidate_id")
-    private LeaderCandidate leaderCandidate;
+    @JoinColumn(name = "team_candidate_id")
+    private TeamCandidate teamCandidate;
 
-    public void setLeaderCandidate(LeaderCandidate leaderCandidate) {
-        this.leaderCandidate = leaderCandidate;
+    public void setTeamCandidate(TeamCandidate teamCandidate) {
+        this.teamCandidate = teamCandidate;
     }
 
     @Builder
-    public LeaderVote(Users user, LeaderCandidate leaderCandidate) {
+    public TeamVote(Users user, TeamCandidate teamCandidate) {
         this.user = user;
-        this.leaderCandidate = leaderCandidate;
+        this.teamCandidate = teamCandidate;
     }
 }
