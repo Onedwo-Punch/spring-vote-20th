@@ -42,7 +42,7 @@ public class LeaderVoteController {
         return new CommonResponse<>(results, "전체 투표 결과 조회를 성공하였습니다.");
     }
 
-    @Operation(summary = "user의 leader vote 조회")
+    @Operation(summary = "user의 leader vote 결과 조회")
     @GetMapping("/{userId}")
     public CommonResponse<LeaderVoteByUserResponseDto> getLeaderVoteByUser(@PathVariable Long userId){
         final LeaderVoteByUserResponseDto leaderVoteByUser = leaderVoteService.getLeaderVoteByUser(userId);

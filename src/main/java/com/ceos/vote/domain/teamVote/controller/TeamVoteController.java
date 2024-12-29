@@ -1,5 +1,6 @@
 package com.ceos.vote.domain.teamVote.controller;
 
+import com.ceos.vote.domain.teamVote.dto.response.TeamVoteByUserResponseDto;
 import com.ceos.vote.domain.teamVote.dto.request.TeamVoteCreateRequestDto;
 import com.ceos.vote.domain.teamVote.service.TeamVoteService;
 import com.ceos.vote.domain.teamVote.dto.response.TeamCandidateResponseDto;
@@ -30,5 +31,12 @@ public class TeamVoteController {
     public CommonResponse<Void> createTeamVote(@RequestBody TeamVoteCreateRequestDto requestDto){
         teamVoteService.createTeamVote(requestDto);
         return new CommonResponse<>("new team vote를 생성하였습니다.");
+    }
+
+    @Operation(summary = "user의 team vote 결과 조회")
+    @GetMapping("/{userId}")
+    public CommonResponse<TeamVoteByUserResponseDto> getTeamVoteByUser(@PathVariable Long userId){
+        final TeamVoteByUserResponseDto teamVoteByUser = teamVoteService.getTeamVoteByUser(userId);
+        return new CommonResponse<>(teamVoteByUser, "해당 user의 투표 결과 조회에 성공하였습니다.");
     }
 }

@@ -10,8 +10,8 @@ public record LeaderVoteByUserResponseDto (
 ){
     public static LeaderVoteByUserResponseDto from(LeaderVote leaderVote, Boolean is_voting){
         return new LeaderVoteByUserResponseDto(
-            is_voting,
-            leaderVote.getLeaderCandidate().getId()
+                is_voting,
+                leaderVote != null ? leaderVote.getLeaderCandidate().getId() : null
         );
     }
 }
