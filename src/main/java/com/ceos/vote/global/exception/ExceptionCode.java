@@ -25,9 +25,11 @@ public enum ExceptionCode {
 
     // 4000: Leader Vote Error
     NOT_FOUND_LEADER_CANDIDATE(HttpStatus.NOT_FOUND, 4001, "해당 leader candidate가 존재하지 않습니다."),
-    NOT_FOUND_LEADER_VOTE(HttpStatus.NOT_FOUND, 4002, "해당 leader vote가 존재하지 않습니다.");
+    NOT_FOUND_LEADER_VOTE(HttpStatus.NOT_FOUND, 4002, "해당 leader vote가 존재하지 않습니다."),
 
-    // 5000:
+    // 5000: Team Vote Error
+    NOT_FOUND_TEAM_CANDIDATE(HttpStatus.NOT_FOUND, 4001, "해당 team candidate가 존재하지 않습니다."),
+    NOT_FOUND_TEAM_VOTE(HttpStatus.NOT_FOUND, 4002, "해당 team vote가 존재하지 않습니다.");
 
 
     // 6000:
