@@ -1,10 +1,13 @@
 package com.ceos.vote.domain.teamVote.service;
 
+import com.ceos.vote.domain.leaderCandidate.entity.LeaderCandidate;
+import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteUpdateRequestDto;
 import com.ceos.vote.domain.leaderVote.entity.LeaderVote;
 import com.ceos.vote.domain.leaderVote.service.LeaderVoteService;
 import com.ceos.vote.domain.teamCandidate.entity.TeamCandidate;
 import com.ceos.vote.domain.teamCandidate.service.TeamCandidateService;
 import com.ceos.vote.domain.teamVote.dto.request.TeamVoteCreateRequestDto;
+import com.ceos.vote.domain.teamVote.dto.request.TeamVoteUpdateRequestDto;
 import com.ceos.vote.domain.teamVote.dto.response.TeamVoteByUserResponseDto;
 import com.ceos.vote.domain.teamVote.entity.TeamVote;
 import com.ceos.vote.domain.teamCandidate.repository.TeamCandidateRepository;
@@ -66,5 +69,19 @@ public class TeamVoteService {
         } catch (Exception e) {
             return TeamVoteByUserResponseDto.from(null, false);
         }
+    }
+
+    /*
+    user의 teamVote 수정
+     */
+    @Transactional
+    public void updateTeamVoteByUser(final Long userId, final TeamVoteUpdateRequestDto requestDto) {
+        TeamVote teamVote = findTeamVoteByUserId(userId);
+
+        TeamCandidate teamCandidate = teamCandidateService.findTeamCandidateById(requestDto.team_candidate_id());
+
+        teamVote.setTeamCandidate(teamCandidate);
+        teamVoteRepository.save(teamVote);
+
     }
 }
