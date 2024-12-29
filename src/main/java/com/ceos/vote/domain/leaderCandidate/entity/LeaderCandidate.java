@@ -1,5 +1,6 @@
 package com.ceos.vote.domain.leaderCandidate.entity;
 
+import com.ceos.vote.domain.users.enumerate.Part;
 import com.ceos.vote.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -19,13 +20,13 @@ public class LeaderCandidate extends BaseEntity {
     private Long id;
 
     @Column(length = 32)
-    private String part;
+    private Part part;
 
     @Column
     private String name;
 
     @Builder
-    public LeaderCandidate(String part, String name) {
+    public LeaderCandidate(Part part, String name) {
         this.part = part;
         this.name = name;
     }

@@ -2,14 +2,18 @@ package com.ceos.vote.domain.leaderVote.controller;
 
 import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteCreateRequestDto;
 import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteUpdateRequestDto;
+import com.ceos.vote.domain.leaderVote.dto.response.LeaderCandidateResponseDto;
 import com.ceos.vote.domain.leaderVote.dto.response.LeaderVoteByUserResponseDto;
 import com.ceos.vote.domain.leaderVote.dto.response.LeaderVoteFinalResultResponseDto;
+import com.ceos.vote.domain.leaderVote.dto.response.PartCandidateResponseDto;
 import com.ceos.vote.domain.leaderVote.service.LeaderVoteService;
 import com.ceos.vote.global.common.response.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "Leader Vote", description = "leader vote api")
 @RestController
@@ -18,6 +22,13 @@ import org.springframework.web.bind.annotation.*;
 public class LeaderVoteController {
     private final LeaderVoteService leaderVoteService;
 
+    @Operation(summary = "leader candidate 전체 조회")
+    @GetMapping("/candidate")
+    public CommonResponse<List<PartCandidateResponseDto>> getLeaderCandidates(){
+        final List<PartCandidateResponseDto> leaderCandidates = leaderVoteService.findLeaderCandidates();
+        return new CommonResponse<>(leaderCandidates, "전체 파트장 후보 조회를 성공하였습니다.");
+    }
+
     @Operation(summary = "leader vote 생성")
     @PostMapping
     public CommonResponse<Void> createLeaderVote(@RequestBody LeaderVoteCreateRequestDto requestDto){
@@ -25,6 +36,8 @@ public class LeaderVoteController {
         return new CommonResponse<>("new leader vote를 생성하였습니다.");
     }
 
+    @Operation(summary = "leader vote 전체 결과 조회")
+    @GetMapping
     public CommonResponse<LeaderVoteFinalResultResponseDto> getLeaderVoteResult(){
         final LeaderVoteFinalResultResponseDto resultResponseDto = leaderVoteService.getLeaderVoteFinalResult();
         return new CommonResponse<>(resultResponseDto, "전체 투표 결과 조회를 성공하였습니다.");

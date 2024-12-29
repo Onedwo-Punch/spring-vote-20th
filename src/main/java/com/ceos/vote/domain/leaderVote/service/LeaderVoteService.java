@@ -5,12 +5,11 @@ import com.ceos.vote.domain.leaderCandidate.repository.LeaderCandidateRepository
 import com.ceos.vote.domain.leaderCandidate.service.LeaderCandidateService;
 import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteCreateRequestDto;
 import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteUpdateRequestDto;
-import com.ceos.vote.domain.leaderVote.dto.response.LeaderResultResponseDto;
-import com.ceos.vote.domain.leaderVote.dto.response.LeaderVoteByUserResponseDto;
-import com.ceos.vote.domain.leaderVote.dto.response.LeaderVoteFinalResultResponseDto;
+import com.ceos.vote.domain.leaderVote.dto.response.*;
 import com.ceos.vote.domain.leaderVote.entity.LeaderVote;
 import com.ceos.vote.domain.leaderVote.repository.LeaderVoteRepository;
 import com.ceos.vote.domain.users.entity.Users;
+import com.ceos.vote.domain.users.enumerate.Part;
 import com.ceos.vote.domain.users.repository.UserRepository;
 import com.ceos.vote.global.exception.ApplicationException;
 import com.ceos.vote.global.exception.ExceptionCode;
@@ -19,7 +18,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.ceos.vote.domain.users.enumerate.Part.*;
+import static com.ceos.vote.domain.users.enumerate.Part.DESIGN;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,6 +43,27 @@ public class LeaderVoteService {
     public Users findUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_EXCEPTION));
+    }
+
+    /*
+    파트별 leader candidate 조회
+     */
+    public List<LeaderCandidateResponseDto> findLeaderCandidatesByPart(Part part) {
+        List<LeaderCandidate> leaderCandidates = leaderCandidateRepository.findByPart(part);
+
+        return leaderCandidates.stream()
+                .map(LeaderCandidateResponseDto::from)
+                .toList();
+    }
+
+    /*
+    전체 leader candidate 조회
+     */
+    public List<PartCandidateResponseDto> findLeaderCandidates() {
+        // part별 leader candidate을 조회하여 PartCandidateResponseDto로 반환
+        return Arrays.stream(Part.values())
+                .map(part -> PartCandidateResponseDto.from(part.getDescription(), findLeaderCandidatesByPart(part)))
+                .collect(Collectors.toList());
     }
 
     /*
