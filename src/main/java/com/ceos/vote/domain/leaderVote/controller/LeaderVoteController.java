@@ -2,7 +2,6 @@ package com.ceos.vote.domain.leaderVote.controller;
 
 import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteCreateRequestDto;
 import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteUpdateRequestDto;
-import com.ceos.vote.domain.leaderVote.dto.response.LeaderCandidateResponseDto;
 import com.ceos.vote.domain.leaderVote.dto.response.LeaderVoteByUserResponseDto;
 import com.ceos.vote.domain.leaderVote.dto.response.LeaderVoteFinalResultResponseDto;
 import com.ceos.vote.domain.leaderVote.dto.response.PartCandidateResponseDto;
