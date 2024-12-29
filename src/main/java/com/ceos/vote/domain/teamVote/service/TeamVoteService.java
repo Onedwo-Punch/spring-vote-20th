@@ -2,24 +2,29 @@ package com.ceos.vote.domain.teamVote.service;
 
 import com.ceos.vote.domain.leaderCandidate.entity.LeaderCandidate;
 import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteUpdateRequestDto;
+import com.ceos.vote.domain.leaderVote.dto.response.LeaderResultResponseDto;
 import com.ceos.vote.domain.leaderVote.entity.LeaderVote;
 import com.ceos.vote.domain.leaderVote.service.LeaderVoteService;
 import com.ceos.vote.domain.teamCandidate.entity.TeamCandidate;
 import com.ceos.vote.domain.teamCandidate.service.TeamCandidateService;
 import com.ceos.vote.domain.teamVote.dto.request.TeamVoteCreateRequestDto;
 import com.ceos.vote.domain.teamVote.dto.request.TeamVoteUpdateRequestDto;
+import com.ceos.vote.domain.teamVote.dto.response.TeamResultResponseDto;
 import com.ceos.vote.domain.teamVote.dto.response.TeamVoteByUserResponseDto;
+import com.ceos.vote.domain.teamVote.dto.response.TeamVoteFinalResultResponseDto;
 import com.ceos.vote.domain.teamVote.entity.TeamVote;
 import com.ceos.vote.domain.teamCandidate.repository.TeamCandidateRepository;
 import com.ceos.vote.domain.teamVote.dto.response.TeamCandidateResponseDto;
 import com.ceos.vote.domain.teamVote.repository.TeamVoteRepository;
 import com.ceos.vote.domain.users.entity.Users;
+import com.ceos.vote.domain.users.enumerate.Part;
 import com.ceos.vote.global.exception.ApplicationException;
 import com.ceos.vote.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -83,5 +88,29 @@ public class TeamVoteService {
         teamVote.setTeamCandidate(teamCandidate);
         teamVoteRepository.save(teamVote);
 
+    }
+
+    /*
+    팀별 teamVote 결과 조회
+     */
+    public List<TeamResultResponseDto> getTeamResult() {
+        // 모든 후보팀 조회
+        List<TeamCandidate> teamCandidates = teamCandidateRepository.findAll();
+
+        // 각 후보의 투표 결과 반환 및 득표수 내림차순 정렬
+        return teamCandidates.stream()
+                .map(candidate -> TeamResultResponseDto.from(candidate.getName(), teamVoteRepository.countByTeamCandidate(candidate)))
+                .sorted(Comparator.comparingLong(TeamResultResponseDto::getVoteCount).reversed()) // 내림차순 정렬
+                .toList();
+    }
+
+    /*
+    teamVote 전체 결과 조회
+     */
+    public TeamVoteFinalResultResponseDto getTeamVoteFinalResult(){
+        List<TeamResultResponseDto> results= getTeamResult();
+        Long total_count = teamVoteRepository.count();
+
+        return TeamVoteFinalResultResponseDto.from(total_count, results);
     }
 }
