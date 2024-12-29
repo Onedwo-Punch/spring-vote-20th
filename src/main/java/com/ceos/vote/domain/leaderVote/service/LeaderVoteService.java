@@ -30,14 +30,18 @@ public class LeaderVoteService {
                 .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_LEADER_VOTE));
     }
 
+    // 추후 UserService에 통합 후 삭제
+    public Users findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_EXCEPTION));
+    }
+
     /*
     leaderVote 생성
      */
     @Transactional
     public void createLeaderVote(LeaderVoteCreateRequestDto requestDto) {
-        Users user = userRepository.findById(requestDto.user_id())
-                .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_EXCEPTION));
-
+        Users user = findUserById(requestDto.user_id());
         LeaderCandidate leaderCandidate = leaderCandidateService.findLeaderCandidateById(requestDto.leader_candidate_id());
 
         final LeaderVote leaderVote = requestDto.toEntity(user, leaderCandidate);
