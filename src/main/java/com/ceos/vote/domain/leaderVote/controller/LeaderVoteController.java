@@ -3,6 +3,7 @@ package com.ceos.vote.domain.leaderVote.controller;
 import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteCreateRequestDto;
 import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteUpdateRequestDto;
 import com.ceos.vote.domain.leaderVote.dto.response.LeaderVoteByUserResponseDto;
+import com.ceos.vote.domain.leaderVote.dto.response.LeaderVoteFinalResultResponseDto;
 import com.ceos.vote.domain.leaderVote.service.LeaderVoteService;
 import com.ceos.vote.global.common.response.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +23,11 @@ public class LeaderVoteController {
     public CommonResponse<Void> createLeaderVote(@RequestBody LeaderVoteCreateRequestDto requestDto){
         leaderVoteService.createLeaderVote(requestDto);
         return new CommonResponse<>("new leader vote를 생성하였습니다.");
+    }
+
+    public CommonResponse<LeaderVoteFinalResultResponseDto> getLeaderVoteResult(){
+        final LeaderVoteFinalResultResponseDto resultResponseDto = leaderVoteService.getLeaderVoteFinalResult();
+        return new CommonResponse<>(resultResponseDto, "전체 투표 결과 조회를 성공하였습니다.");
     }
 
     @Operation(summary = "user의 leader vote 조회")
