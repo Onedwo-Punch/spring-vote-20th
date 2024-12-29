@@ -1,6 +1,5 @@
 package com.ceos.vote.domain.teamVote.controller;
 
-import com.ceos.vote.domain.leaderVote.dto.response.LeaderVoteFinalResultResponseDto;
 import com.ceos.vote.domain.teamVote.dto.request.TeamVoteUpdateRequestDto;
 import com.ceos.vote.domain.teamVote.dto.response.TeamVoteByUserResponseDto;
 import com.ceos.vote.domain.teamVote.dto.request.TeamVoteCreateRequestDto;

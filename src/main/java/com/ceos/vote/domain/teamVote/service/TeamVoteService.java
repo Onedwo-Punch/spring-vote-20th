@@ -1,9 +1,5 @@
 package com.ceos.vote.domain.teamVote.service;
 
-import com.ceos.vote.domain.leaderCandidate.entity.LeaderCandidate;
-import com.ceos.vote.domain.leaderVote.dto.request.LeaderVoteUpdateRequestDto;
-import com.ceos.vote.domain.leaderVote.dto.response.LeaderResultResponseDto;
-import com.ceos.vote.domain.leaderVote.entity.LeaderVote;
 import com.ceos.vote.domain.leaderVote.service.LeaderVoteService;
 import com.ceos.vote.domain.teamCandidate.entity.TeamCandidate;
 import com.ceos.vote.domain.teamCandidate.service.TeamCandidateService;
@@ -17,7 +13,6 @@ import com.ceos.vote.domain.teamCandidate.repository.TeamCandidateRepository;
 import com.ceos.vote.domain.teamVote.dto.response.TeamCandidateResponseDto;
 import com.ceos.vote.domain.teamVote.repository.TeamVoteRepository;
 import com.ceos.vote.domain.users.entity.Users;
-import com.ceos.vote.domain.users.enumerate.Part;
 import com.ceos.vote.global.exception.ApplicationException;
 import com.ceos.vote.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
