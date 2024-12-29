@@ -3,15 +3,12 @@ package com.ceos.vote.domain.leaderVote.dto.request;
 import com.ceos.vote.domain.leaderCandidate.entity.LeaderCandidate;
 import com.ceos.vote.domain.leaderVote.entity.LeaderVote;
 import com.ceos.vote.domain.users.entity.Users;
-import jakarta.validation.constraints.NotNull;
 
 public record LeaderVoteCreateRequestDto (
-        @NotNull
-        Users user,
-        @NotNull
-        LeaderCandidate leaderCandidate
+        Long user_id,
+        Long leader_candidate_id
 ){
-    public LeaderVote toEntity(){
+    public LeaderVote toEntity(Users user, LeaderCandidate leaderCandidate) {
         return LeaderVote.builder()
                 .user(user)
                 .leaderCandidate(leaderCandidate)

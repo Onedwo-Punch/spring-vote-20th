@@ -28,6 +28,10 @@ public class LeaderVote extends BaseEntity {
     @JoinColumn(name = "leader_candidate_id")
     private LeaderCandidate leaderCandidate;
 
+    public void setLeaderCandidate(LeaderCandidate leaderCandidate) {
+        this.leaderCandidate = leaderCandidate;
+    }
+
     @Builder
     public LeaderVote(Users user, LeaderCandidate leaderCandidate) {
         this.user = user;
