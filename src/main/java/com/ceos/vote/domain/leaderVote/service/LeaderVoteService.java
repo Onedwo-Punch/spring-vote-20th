@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -107,9 +108,10 @@ public class LeaderVoteService {
         // 파트에 속한 모든 리더 후보 조회
         List<LeaderCandidate> leaderCandidates = leaderCandidateRepository.findByPart(part);
 
-        // 각 후보의 투표 결과 반환
+        // 각 후보의 투표 결과 반환 및 득표수 내림차순 정렬
         return leaderCandidates.stream()
                 .map(candidate -> LeaderResultResponseDto.from(candidate.getName(), leaderVoteRepository.countByLeaderCandidate(candidate)))
+                .sorted(Comparator.comparingLong(LeaderResultResponseDto::getVoteCount).reversed()) // 내림차순 정렬
                 .toList();
     }
 
