@@ -22,9 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ceos.vote.domain.users.enumerate.Part.*;
-import static com.ceos.vote.domain.users.enumerate.Part.DESIGN;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -62,7 +59,7 @@ public class LeaderVoteService {
     public List<PartCandidateResponseDto> findLeaderCandidates() {
         // part별 leader candidate을 조회하여 PartCandidateResponseDto로 반환
         return Arrays.stream(Part.values())
-                .map(part -> PartCandidateResponseDto.from(part.getDescription(), findLeaderCandidatesByPart(part)))
+                .map(part -> PartCandidateResponseDto.from(part, findLeaderCandidatesByPart(part)))
                 .collect(Collectors.toList());
     }
 
@@ -105,28 +102,39 @@ public class LeaderVoteService {
     }
 
     /*
-    user의 leaderVote 결과 조회
+    파트별 leaderVote 결과 조회
      */
-    public LeaderResultResponseDto getLeaderResult(LeaderCandidate leaderCandidate) {
-        final String name = leaderCandidate.getName();
-        final Long count = leaderVoteRepository.countByLeaderCandidate(leaderCandidate);
+    public List<LeaderResultResponseDto> getLeaderResult(Part part) {
+        // 파트에 속한 모든 리더 후보 조회
+        List<LeaderCandidate> leaderCandidates = leaderCandidateRepository.findByPart(part);
 
-        return LeaderResultResponseDto.from(name, count);
+        // 각 후보의 투표 결과 반환
+        return leaderCandidates.stream()
+                .map(candidate -> LeaderResultResponseDto.from(candidate.getName(), leaderVoteRepository.countByLeaderCandidate(candidate)))
+                .toList();
+    }
+
+    /*
+    파트별 leaderVote 총 투표수 조회
+    */
+    public long getTotalVotesByPart(Part part) {
+        // 파트에 속한 모든 리더 후보 조회
+        List<LeaderCandidate> leaderCandidates = leaderCandidateRepository.findByPart(part);
+
+        // 각 후보의 투표수를 합산
+        return leaderCandidates.stream()
+                .mapToLong(candidate -> leaderVoteRepository.countByLeaderCandidate(candidate))
+                .sum();
     }
 
     /*
     leaderVote 전체 결과 조회
      */
-    public LeaderVoteFinalResultResponseDto getLeaderVoteFinalResult() {
-        List<LeaderCandidate> leaderCandidates = leaderCandidateRepository.findAll();
-        List<LeaderResultResponseDto> resultList = new ArrayList<>();
+    public List<LeaderVoteFinalResultResponseDto> getLeaderVoteFinalResult() {
 
-        // 각 leader candidate의 결과를 LeaderResultResponseDto로 변환
-        leaderCandidates.forEach(leaderCandidate -> resultList.add(getLeaderResult(leaderCandidate)));
-
-        // 총 투표수 조회
-        final Long count = leaderVoteRepository.count();
-
-        return LeaderVoteFinalResultResponseDto.from(count, resultList);
+        // part별 투표 결과를 LeaderVoteFinalResultResponseDto로 반환
+        return Arrays.stream(Part.values())
+                .map(part -> LeaderVoteFinalResultResponseDto.from(part, getTotalVotesByPart(part), getLeaderResult(part)))
+                .collect(Collectors.toList());
     }
 }

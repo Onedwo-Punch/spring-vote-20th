@@ -8,9 +8,9 @@ public record PartCandidateResponseDto (
         String part,
         List<LeaderCandidateResponseDto> leaderCandidates
 ){
-    public static PartCandidateResponseDto from(String part, List<LeaderCandidateResponseDto> leaderCandidates) {
+    public static PartCandidateResponseDto from(Part part, List<LeaderCandidateResponseDto> leaderCandidates) {
         return new PartCandidateResponseDto(
-                part,
+                part.getDescription(),
                 leaderCandidates
         );
     }

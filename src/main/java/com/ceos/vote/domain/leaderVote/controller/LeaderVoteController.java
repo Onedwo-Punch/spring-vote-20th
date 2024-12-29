@@ -38,9 +38,9 @@ public class LeaderVoteController {
 
     @Operation(summary = "leader vote 전체 결과 조회")
     @GetMapping
-    public CommonResponse<LeaderVoteFinalResultResponseDto> getLeaderVoteResult(){
-        final LeaderVoteFinalResultResponseDto resultResponseDto = leaderVoteService.getLeaderVoteFinalResult();
-        return new CommonResponse<>(resultResponseDto, "전체 투표 결과 조회를 성공하였습니다.");
+    public CommonResponse<List<LeaderVoteFinalResultResponseDto>> getLeaderVoteResult(){
+        final List<LeaderVoteFinalResultResponseDto> results = leaderVoteService.getLeaderVoteFinalResult();
+        return new CommonResponse<>(results, "전체 투표 결과 조회를 성공하였습니다.");
     }
 
     @Operation(summary = "user의 leader vote 조회")
