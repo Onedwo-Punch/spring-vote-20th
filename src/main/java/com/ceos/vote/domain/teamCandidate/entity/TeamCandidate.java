@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class TeamCandidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "leader_candidate_id")
+    @Column(name = "team_candidate_id")
     private Long id;
 
     @Column
