@@ -1,12 +1,12 @@
 package com.ceos.vote.global.config;
 
+
 import com.ceos.vote.domain.auth.JwtAuthenticationFilter;
 import com.ceos.vote.domain.auth.JwtTokenProvider;
 import com.ceos.vote.domain.auth.service.UserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,9 +18,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 //import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+
     private final UserDetailService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -60,9 +63,6 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService); // 사용자 정보 서비스 설정
-        authProvider.setPasswordEncoder(bCryptPasswordEncoder()); // 비밀번호 인코더 설정
         return configuration.getAuthenticationManager();
     }
 
@@ -70,6 +70,7 @@ public class SecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 //  @Bean
 //    public WebSecurityCustomizer configure(){
@@ -82,4 +83,5 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //        return NoOpPasswordEncoder.getInstance();
     }
+
 }
