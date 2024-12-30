@@ -64,6 +64,3 @@ logging:
 springdoc:
   swagger-ui:
     path: /swagger
-
-jwt:
-  secret:161dd0a2af20a9c25c2d0044222d46a1ba6b0f2641e240a50f1694a7da9a5b73
