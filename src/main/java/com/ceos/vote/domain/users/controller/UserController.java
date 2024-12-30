@@ -1,6 +1,7 @@
 package com.ceos.vote.domain.users.controller;
 
 import com.ceos.vote.domain.auth.service.UserService;
+import com.ceos.vote.domain.users.dto.response.UserResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserResponseDto getUserInfo(@PathVariable Long userId){
-        return userService.getUserInfo(userId);
+    public UserResponseDto getUserInfo(@PathVariable String username){
+        return UserService.getUserInfo(username);
     }
 }

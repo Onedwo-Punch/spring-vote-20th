@@ -4,6 +4,8 @@ import com.ceos.vote.domain.auth.JwtToken;
 import com.ceos.vote.domain.auth.JwtTokenProvider;
 import com.ceos.vote.domain.auth.dto.SignUpDto;
 import com.ceos.vote.domain.auth.dto.UserDto;
+import com.ceos.vote.domain.users.dto.response.UserResponseDto;
+import com.ceos.vote.domain.users.entity.User;
 import com.ceos.vote.domain.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,16 @@ public class UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+
+    public static UserResponseDto getUserInfo(String username){
+        User user = UserRepository.findByUsername(username).orElse(null);
+
+        return new UserResponseDto(
+                user.getUserPart(),
+                user.getUserTeam(),
+                user.getUsername()
+        );
+    }
 
     @Transactional
     //@Override
