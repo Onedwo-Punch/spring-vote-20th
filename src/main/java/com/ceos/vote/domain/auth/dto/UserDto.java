@@ -1,6 +1,6 @@
 package com.ceos.vote.domain.auth.dto;
 
-import com.ceos.vote.domain.users.entity.User;
+import com.ceos.vote.domain.users.entity.Users;
 import lombok.*;
 
 @Getter
@@ -17,18 +17,18 @@ public class UserDto {
     private String userTeam;
     private String userPart;
 
-    static public UserDto toDto(User user) {
+    static public UserDto toDto(Users users) {
         return UserDto.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .userTeam(user.getUserTeam())
-                .userPart(user.getUserPart())
+                .id(users.getId())
+                .username(users.getUsername())
+                .email(users.getEmail())
+                .userTeam(users.getUserTeam())
+                .userPart(users.getUserPart())
                 .build();
     }
 
-    public User toEntity() {
-        return User.builder()
+    public Users toEntity() {
+        return Users.builder()
                 .id(id)
                 .username(username)
                 .email(email)

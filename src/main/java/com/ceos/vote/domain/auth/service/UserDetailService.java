@@ -1,6 +1,6 @@
 package com.ceos.vote.domain.auth.service;
 
-import com.ceos.vote.domain.users.entity.User;
+import com.ceos.vote.domain.users.entity.Users;
 import com.ceos.vote.domain.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -26,11 +26,11 @@ public class UserDetailService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원을 찾을 수 없습니다."));
     }
 
-    private UserDetails createUserDetails(@NotNull User user) {
-        return User.builder()
-                .username(user.getUsername())
-                .password(passwordEncoder.encode(user.getPassword()))
-                .roles(List.of(user.getRoles().toArray(new String[0])))
+    private UserDetails createUserDetails(@NotNull Users users) {
+        return Users.builder()
+                .username(users.getUsername())
+                .password(passwordEncoder.encode(users.getPassword()))
+                .roles(List.of(users.getRoles().toArray(new String[0])))
                 .build();
     }
 }

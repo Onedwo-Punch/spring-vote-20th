@@ -1,6 +1,6 @@
 package com.ceos.vote.domain.auth.dto;
 
-import com.ceos.vote.domain.users.entity.User;
+import com.ceos.vote.domain.users.entity.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,8 +22,8 @@ public class SignUpDto {
     private String userPart;
     private List<String> roles = new ArrayList<>();
 
-    public User toEntity(String encodedPassword, List<String> roles){
-        return User.builder()
+    public Users toEntity(String encodedPassword, List<String> roles){
+        return Users.builder()
                 .username(username)
                 .email(email)
                 .password(encodedPassword)

@@ -1,6 +1,5 @@
 package com.ceos.vote.domain.users.entity;
 
-import com.ceos.vote.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 @Table(name = "USER")
 @Builder
 @EqualsAndHashCode(of = "id")
-public class User implements UserDetails {
+public class Users implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
