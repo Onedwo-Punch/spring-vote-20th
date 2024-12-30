@@ -1,4 +1,4 @@
-package com.ceos.vote.domain.users.dto;
+package com.ceos.vote.domain.auth.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

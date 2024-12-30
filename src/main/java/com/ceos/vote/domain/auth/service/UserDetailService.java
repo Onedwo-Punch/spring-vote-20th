@@ -1,4 +1,4 @@
-package com.ceos.vote.domain.users.service;
+package com.ceos.vote.domain.auth.service;
 
 import com.ceos.vote.domain.users.entity.User;
 import com.ceos.vote.domain.users.repository.UserRepository;
