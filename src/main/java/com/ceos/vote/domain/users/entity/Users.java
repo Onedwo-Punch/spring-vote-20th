@@ -1,6 +1,7 @@
 package com.ceos.vote.domain.users.entity;
 
 
+import com.ceos.vote.domain.users.enumerate.Part;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,8 +41,9 @@ public class Users implements UserDetails {
     @Column(name="user_team")
     private String userTeam;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="user_part")
-    private String userPart;
+    private Part userPart;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -52,30 +54,4 @@ public class Users implements UserDetails {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public String getUsername() {
-        return "";
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
 }

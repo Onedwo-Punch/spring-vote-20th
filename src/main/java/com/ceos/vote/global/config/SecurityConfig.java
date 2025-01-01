@@ -43,13 +43,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/hc", "/env","/**","/login/**", "/auth/join/**").permitAll()
+                        .requestMatchers("/hc", "/env","/**").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/login/**", "/auth/join/**", "/signup", "/user").permitAll()
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/login/**", "/auth/join/**", "/signup", "/user", "/user/sign-in").permitAll()
                         .requestMatchers("/reissue").permitAll()
-                        .requestMatchers("/user/sign-up").permitAll()
-                        .requestMatchers("/user/sign-in").permitAll()
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll()
                          .requestMatchers("/user/test").hasRole("user")
                         .anyRequest().authenticated())

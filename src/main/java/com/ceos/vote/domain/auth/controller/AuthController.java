@@ -1,11 +1,12 @@
 package com.ceos.vote.domain.auth.controller;
 
 import com.ceos.vote.domain.auth.JwtToken;
-import com.ceos.vote.domain.auth.dto.SignInDto;
-import com.ceos.vote.domain.auth.dto.SignUpDto;
-import com.ceos.vote.domain.auth.dto.UserDto;
+import com.ceos.vote.domain.auth.dto.request.SignInDto;
+import com.ceos.vote.domain.auth.dto.request.SignUpDto;
+import com.ceos.vote.domain.auth.dto.response.UserInfoDto;
 import com.ceos.vote.domain.auth.service.UserService;
 import com.ceos.vote.domain.utils.SecurityUtil;
+import com.ceos.vote.global.common.response.CommonResponse;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +24,14 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<UserDto> signUp(@RequestBody SignUpDto signUpDto) {
-        UserDto userDto = userService.signUp(signUpDto);
-        return ResponseEntity.ok(userDto);
+    public ResponseEntity<CommonResponse<UserInfoDto>> signUp(@RequestBody SignUpDto signUpDto) {
+        UserInfoDto userInfoDto = userService.signUp(signUpDto);
+        CommonResponse<UserInfoDto> response = new CommonResponse<>(userInfoDto, "회원가입에 성공했습니다.");
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/sign-in")
-    public JwtToken signIn(@RequestBody SignInDto signinDto){
+    public CommonResponse<JwtToken> signIn(@RequestBody SignInDto signinDto){
 
         String username = signinDto.getUsername();
         String password = signinDto.getPassword();
@@ -38,11 +40,14 @@ public class AuthController {
         log.info("request username = {}, password = {}", username, password);
         log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
 
-    return jwtToken;
+        return new CommonResponse<>(jwtToken, "로그인에 성공헀습니다.");
     }
 
     @PostMapping("/test")
-    public String test(){
-        return SecurityUtil.getCurrentUsername();
+    public CommonResponse<String> test(){
+
+        String currentUsername = SecurityUtil.getCurrentUsername();
+
+        return new CommonResponse<>(currentUsername, "현재 사용자 정보를 반환합니다.");
     }
 }

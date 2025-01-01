@@ -1,6 +1,7 @@
-package com.ceos.vote.domain.auth.dto;
+package com.ceos.vote.domain.auth.dto.response;
 
 import com.ceos.vote.domain.users.entity.Users;
+import com.ceos.vote.domain.users.enumerate.Part;
 import lombok.*;
 
 @Getter
@@ -8,17 +9,17 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class UserInfoDto {
 
     private Long id;
     private String username;
     private String email;
     private String password;
     private String userTeam;
-    private String userPart;
+    private Part userPart;
 
-    static public UserDto toDto(Users users) {
-        return UserDto.builder()
+    static public UserInfoDto from(Users users) {
+        return UserInfoDto.builder()
                 .id(users.getId())
                 .username(users.getUsername())
                 .email(users.getEmail())
@@ -27,13 +28,4 @@ public class UserDto {
                 .build();
     }
 
-    public Users toEntity() {
-        return Users.builder()
-                .id(id)
-                .username(username)
-                .email(email)
-                .userTeam(userTeam)
-                .userPart(userPart)
-                .build();
-    }
 }

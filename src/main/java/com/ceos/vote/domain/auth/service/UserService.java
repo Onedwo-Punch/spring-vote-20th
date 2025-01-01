@@ -2,8 +2,8 @@ package com.ceos.vote.domain.auth.service;
 
 import com.ceos.vote.domain.auth.JwtToken;
 import com.ceos.vote.domain.auth.JwtTokenProvider;
-import com.ceos.vote.domain.auth.dto.SignUpDto;
-import com.ceos.vote.domain.auth.dto.UserDto;
+import com.ceos.vote.domain.auth.dto.request.SignUpDto;
+import com.ceos.vote.domain.auth.dto.response.UserInfoDto;
 import com.ceos.vote.domain.users.dto.response.UserResponseDto;
 import com.ceos.vote.domain.users.entity.Users;
 import com.ceos.vote.domain.users.repository.UserRepository;
@@ -34,7 +34,7 @@ public class UserService {
         Users users = UserRepository.findByUsername(username).orElse(null);
 
         return new UserResponseDto(
-                users.getUserPart(),
+                users.getUserPart().name(),
                 users.getUserTeam(),
                 users.getUsername()
         );
@@ -42,7 +42,7 @@ public class UserService {
 
     @Transactional
     //@Override
-    public UserDto signUp(SignUpDto signUpDto){
+    public UserInfoDto signUp(SignUpDto signUpDto){
         if(userRepository.existsByUsername(signUpDto.getUsername())){
             throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
         }
@@ -51,7 +51,7 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
         List<String> roles = new ArrayList<>();
         roles.add("USER"); //user 권한 부여
-        return UserDto.toDto(userRepository.save(signUpDto.toEntity(encodedPassword, roles)));
+        return UserInfoDto.from(userRepository.save(signUpDto.toEntity(encodedPassword, roles)));
     }
 
     @Transactional

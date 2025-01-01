@@ -2,6 +2,8 @@ package com.ceos.vote.domain.auth.service;
 
 import com.ceos.vote.domain.users.entity.Users;
 import com.ceos.vote.domain.users.repository.UserRepository;
+import com.ceos.vote.global.exception.ApplicationException;
+import com.ceos.vote.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +25,7 @@ public class UserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return UserRepository.findByUsername(username)
                 .map(this::createUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_USER));
     }
 
     private UserDetails createUserDetails(@NotNull Users users) {

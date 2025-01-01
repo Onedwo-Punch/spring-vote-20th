@@ -1,6 +1,7 @@
-package com.ceos.vote.domain.auth.dto;
+package com.ceos.vote.domain.auth.dto.request;
 
 import com.ceos.vote.domain.users.entity.Users;
+import com.ceos.vote.domain.users.enumerate.Part;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class SignUpDto {
                 .email(email)
                 .password(encodedPassword)
                 .userTeam(userTeam)
-                .userPart(userPart)
+                .userPart(Part.valueOf(userPart))
                 .roles(roles)
                 .build();
     }
