@@ -7,6 +7,8 @@ import com.ceos.vote.domain.auth.dto.response.UserInfoDto;
 import com.ceos.vote.domain.users.dto.response.UserResponseDto;
 import com.ceos.vote.domain.users.entity.Users;
 import com.ceos.vote.domain.users.repository.UserRepository;
+import com.ceos.vote.global.exception.ApplicationException;
+import com.ceos.vote.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,15 +45,31 @@ public class UserService {
     @Transactional
     //@Override
     public UserInfoDto signUp(SignUpDto signUpDto){
+
+        // 사용자 이름 중복 확인
         if(userRepository.existsByUsername(signUpDto.getUsername())){
             throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
         }
 
+        // 사용자 이메일 중복 확인
+        if(userRepository.existsByEmail(signUpDto.getEmail())){
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+        }
+
+        log.debug("PASSWORD{}", signUpDto.getPassword());
+
+        //비밀번호 유효성 검사
+        if (signUpDto.getPassword() == null || signUpDto.getPassword().isEmpty()) {
+        throw new ApplicationException(ExceptionCode.INVALID_PASSWORD);
+        }
+
         //password 암호화
         String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
-        List<String> roles = new ArrayList<>();
-        roles.add("USER"); //user 권한 부여
-        return UserInfoDto.from(userRepository.save(signUpDto.toEntity(encodedPassword, roles)));
+        log.debug("encodedPassword{}", encodedPassword);
+
+        //사용자 저장
+        Users newUser = userRepository.save(signUpDto.toEntity(encodedPassword));
+        return UserInfoDto.from(newUser);
     }
 
     @Transactional

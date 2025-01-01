@@ -24,7 +24,7 @@ public enum ExceptionCode {
     // 3000: USER
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, 3001, "해당 회원을 찾을 수 없습니다."),
     INVALID_USER_CREDENTIALS(HttpStatus.UNAUTHORIZED, 3002, "잘못된 사용자 인증 정보입니다."),
-
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, 3003, "비밀번호를 찾을 수 없습니다."),
 
     // 4000: Leader Vote Error
     NOT_FOUND_LEADER_CANDIDATE(HttpStatus.NOT_FOUND, 4001, "해당 leader candidate가 존재하지 않습니다."),

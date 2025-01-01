@@ -27,7 +27,7 @@ public class Users implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", updatable = false, nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long id;
 
     @Column(name="name")
@@ -39,6 +39,7 @@ public class Users implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="user_team")
     private Team userTeam;
 
@@ -46,13 +47,8 @@ public class Users implements UserDetails {
     @Column(name="user_part")
     private Part userPart;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 }

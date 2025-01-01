@@ -3,13 +3,11 @@ package com.ceos.vote.domain.auth.dto.request;
 import com.ceos.vote.domain.users.entity.Users;
 import com.ceos.vote.domain.users.enumerate.Part;
 import com.ceos.vote.domain.users.enumerate.Team;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -19,21 +17,24 @@ public class SignUpDto {
 
     private String username;
     private String email;
+    @NotBlank(message = "Password is mandatory")
     private String password;
-    private String userTeam;
-    private String userPart;
-    private List<String> roles = new ArrayList<>();
+    private Team userTeam;
+    private Part userPart;
 
-    public Users toEntity(String encodedPassword, List<String> roles){
+    public Users toEntity(String encodedPassword){
         return Users.builder()
                 .username(username)
                 .email(email)
                 .password(encodedPassword)
-                .userTeam(Team.valueOf(userTeam))
-                .userPart(Part.valueOf(userPart))
-                .roles(roles)
+                .userTeam(userTeam)
+                .userPart(userPart)
                 .build();
     }
 
+    public String getPassword() {
+        System.out.println("Getter called for password: " + password);
+        return password;
+    }
 
 }
