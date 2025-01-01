@@ -20,7 +20,7 @@ import java.util.List;
 public class UserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -37,7 +37,7 @@ public class UserDetailService implements UserDetailsService {
     private UserDetails createUserDetails(@NotNull Users users) {
         return Users.builder()
                 .username(users.getUsername())
-                .password(passwordEncoder.encode(users.getPassword()))
+                .password(users.getPassword())
                 .build();
     }
 }
