@@ -20,11 +20,11 @@ import java.util.List;
 public class UserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder = null;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return UserRepository.findByUsername(username)
+        return userRepository.findByUsername(username)
                 .map(this::createUserDetails)
                 .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_USER));
     }

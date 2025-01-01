@@ -17,7 +17,6 @@ public class SignUpDto {
 
     private String username;
     private String email;
-    @NotBlank(message = "Password is mandatory")
     private String password;
     private Team userTeam;
     private Part userPart;

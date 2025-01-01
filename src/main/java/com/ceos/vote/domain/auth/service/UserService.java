@@ -32,8 +32,8 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public static UserResponseDto getUserInfo(String username){
-        Users users = UserRepository.findByUsername(username).orElse(null);
+    public UserResponseDto getUserInfo(String username){
+        Users users = userRepository.findByUsername(username).orElse(null);
 
         return new UserResponseDto(
                 users.getUserPart().name(),

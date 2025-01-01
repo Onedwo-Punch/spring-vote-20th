@@ -7,11 +7,11 @@ import com.ceos.vote.domain.auth.dto.response.UserInfoDto;
 import com.ceos.vote.domain.auth.service.UserService;
 import com.ceos.vote.domain.utils.SecurityUtil;
 import com.ceos.vote.global.common.response.CommonResponse;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
@@ -38,11 +38,11 @@ public class AuthController {
     @PostMapping("/sign-in")
     public CommonResponse<JwtToken> signIn(@RequestBody SignInDto signinDto){
 
-        String id = signinDto.getId();
+        String username = signinDto.getUsername();
         String password = signinDto.getPassword();
-        JwtToken jwtToken = userService.signIn(id, password);
+        JwtToken jwtToken = userService.signIn(username, password);
 
-        AuthController.log.info("request id = {}, password = {}", id, password);
+        AuthController.log.info("request name = {}, password = {}", username, password);
         AuthController.log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
 
         return new CommonResponse<>(jwtToken, "로그인에 성공헀습니다.");
