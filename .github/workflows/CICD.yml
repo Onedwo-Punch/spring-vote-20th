@@ -87,6 +87,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
+            export JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/vote:latest
             sudo docker-compose -f docker-compose-${{env.TARGET_UPSTREAM}}.yml up -d
 

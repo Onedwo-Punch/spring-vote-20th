@@ -69,7 +69,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/hc", "/env", "/").permitAll()
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger/**", "/swagger-ui.html/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("api/v1/auth/**", "/reissue").permitAll()
                         .requestMatchers("/api/v1/**").hasRole("user")
@@ -92,15 +92,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-//  @Bean
-//    public WebSecurityCustomizer configure(){
-//        return (web) -> web.ignoring()
-//                .requestMatchers(toH2Console())
-//                .requestMatchers(new AntPathRequestMatcher("/static/**"));
-//    }
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public static PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //        return NoOpPasswordEncoder.getInstance();
     }

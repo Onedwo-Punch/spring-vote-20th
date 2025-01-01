@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,11 @@ import java.util.List;
 public class UserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder = null;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return UserRepository.findByUsername(username)
+        return userRepository.findByUsername(username)
                 .map(this::createUserDetails)
                 .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_USER));
     }
@@ -36,8 +37,7 @@ public class UserDetailService implements UserDetailsService {
     private UserDetails createUserDetails(@NotNull Users users) {
         return Users.builder()
                 .username(users.getUsername())
-                .password(passwordEncoder.encode(users.getPassword()))
-                .roles(List.of(users.getRoles().toArray(new String[0])))
+                .password(users.getPassword())
                 .build();
     }
 }
