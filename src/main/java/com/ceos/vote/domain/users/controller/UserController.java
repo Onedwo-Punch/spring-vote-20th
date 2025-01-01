@@ -20,6 +20,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    //현재 가지고 있는(로그인된) 정보로 회원 정보 조회
     @GetMapping
     public CommonResponse<UserResponseDto> getUserInfo(@AuthenticationPrincipal User user) {
         UserResponseDto userResponseDto = userService.getUserInfo(user.getUsername());
