@@ -1,5 +1,6 @@
 package com.ceos.vote.domain.teamVote.service;
 
+import com.ceos.vote.domain.auth.service.UserDetailService;
 import com.ceos.vote.domain.leaderVote.service.LeaderVoteService;
 import com.ceos.vote.domain.teamCandidate.entity.TeamCandidate;
 import com.ceos.vote.domain.teamCandidate.service.TeamCandidateService;
@@ -28,8 +29,8 @@ import java.util.List;
 public class TeamVoteService {
     private final TeamVoteRepository teamVoteRepository;
     private final TeamCandidateRepository teamCandidateRepository;
-    private final LeaderVoteService leaderVoteService;
     private final TeamCandidateService teamCandidateService;
+    private final UserDetailService userDetailService;
 
     public TeamVote findTeamVoteByUserId(Long id) {
         return teamVoteRepository.findByUserId(id)
@@ -52,7 +53,7 @@ public class TeamVoteService {
      */
     @Transactional
     public void createTeamVote(TeamVoteCreateRequestDto requestDto) {
-        Users user = leaderVoteService.findUserById(requestDto.user_id());
+        Users user = userDetailService.findUserById(requestDto.user_id());
         TeamCandidate teamCandidate = teamCandidateService.findTeamCandidateById(requestDto.team_candidate_id());
 
         final TeamVote teamVote = requestDto.toEntity(user, teamCandidate);

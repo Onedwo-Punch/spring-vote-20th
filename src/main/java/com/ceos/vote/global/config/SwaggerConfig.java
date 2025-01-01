@@ -17,13 +17,24 @@ import org.springframework.context.annotation.Configuration;
                 description = "CEOS vote service API 명세서",
                 version = "v1"
         ),
-        servers = {@Server(url = "http://localhost:8080", description = "local server")}
+        servers = {@Server(url = "http://localhost:8080", description = "local server"),
+                @Server(url = "http://52.79.122.106", description = "ec2 server")}
 )
 
 public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
+        String jwt = "JWT";
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
+        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
+                .name(jwt)
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat(jwt)
+        );
+
         return new OpenAPI()
-                .components(new Components());
+                .addSecurityItem(securityRequirement)
+                .components(components);
     }
 }

@@ -18,6 +18,7 @@ public class SignUpDto {
     private String username;
     private String email;
     private String password;
+
     private Team userTeam;
     private Part userPart;
 

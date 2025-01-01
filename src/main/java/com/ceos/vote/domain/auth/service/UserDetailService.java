@@ -29,6 +29,11 @@ public class UserDetailService implements UserDetailsService {
                 .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_USER));
     }
 
+    public Users findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_EXCEPTION));
+    }
+
     private UserDetails createUserDetails(@NotNull Users users) {
         return Users.builder()
                 .username(users.getUsername())
