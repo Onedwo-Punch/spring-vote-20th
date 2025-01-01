@@ -2,6 +2,7 @@ package com.ceos.vote.domain.users.entity;
 
 
 import com.ceos.vote.domain.users.enumerate.Part;
+import com.ceos.vote.domain.users.enumerate.Team;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,7 +40,7 @@ public class Users implements UserDetails {
     private String password;
 
     @Column(name="user_team")
-    private String userTeam;
+    private Team userTeam;
 
     @Enumerated(EnumType.STRING)
     @Column(name="user_part")

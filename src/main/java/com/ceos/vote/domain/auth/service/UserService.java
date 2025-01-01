@@ -35,7 +35,7 @@ public class UserService {
 
         return new UserResponseDto(
                 users.getUserPart().name(),
-                users.getUserTeam(),
+                users.getUserTeam().name(),
                 users.getUsername()
         );
     }

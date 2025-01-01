@@ -2,6 +2,7 @@ package com.ceos.vote.domain.auth.dto.response;
 
 import com.ceos.vote.domain.users.entity.Users;
 import com.ceos.vote.domain.users.enumerate.Part;
+import com.ceos.vote.domain.users.enumerate.Team;
 import lombok.*;
 
 @Getter
@@ -15,7 +16,7 @@ public class UserInfoDto {
     private String username;
     private String email;
     private String password;
-    private String userTeam;
+    private Team userTeam;
     private Part userPart;
 
     static public UserInfoDto from(Users users) {

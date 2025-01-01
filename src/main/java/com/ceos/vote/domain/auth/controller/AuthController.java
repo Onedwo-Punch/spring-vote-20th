@@ -10,7 +10,6 @@ import com.ceos.vote.global.common.response.CommonResponse;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,10 +23,9 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<CommonResponse<UserInfoDto>> signUp(@RequestBody SignUpDto signUpDto) {
+    public CommonResponse<UserInfoDto> signUp(@RequestBody SignUpDto signUpDto) {
         UserInfoDto userInfoDto = userService.signUp(signUpDto);
-        CommonResponse<UserInfoDto> response = new CommonResponse<>(userInfoDto, "회원가입에 성공했습니다.");
-        return ResponseEntity.ok(response);
+        return new CommonResponse<>(userInfoDto, "회원가입에 성공했습니다.");
     }
 
     @PostMapping("/sign-in")
