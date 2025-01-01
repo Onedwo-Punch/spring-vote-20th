@@ -19,13 +19,20 @@ public enum ExceptionCode {
     FORBIDDEN_EXCEPTION(HttpStatus.FORBIDDEN, 2005, "인가되지 않는 요청입니다."),
     ALREADY_EXIST_EXCEPTION(HttpStatus.BAD_REQUEST, 2006, "이미 존재하는 리소스입니다."),
     INVALID_SORT_EXCEPTION(HttpStatus.BAD_REQUEST, 2007, "올바르지 않은 정렬 값입니다."),
-    BAD_REQUEST_ERROR(HttpStatus.BAD_REQUEST, 2008, "잘못된 요청입니다.");
+    BAD_REQUEST_ERROR(HttpStatus.BAD_REQUEST, 2008, "잘못된 요청입니다."),
 
-    // 3000:
+    // 3000: USER
+    NOT_FOUND_USER(HttpStatus.NOT_FOUND, 3001, "해당 회원을 찾을 수 없습니다."),
+    INVALID_USER_CREDENTIALS(HttpStatus.UNAUTHORIZED, 3002, "잘못된 사용자 인증 정보입니다."),
 
-    // 4000:
 
-    // 5000:
+    // 4000: Leader Vote Error
+    NOT_FOUND_LEADER_CANDIDATE(HttpStatus.NOT_FOUND, 4001, "해당 leader candidate가 존재하지 않습니다."),
+    NOT_FOUND_LEADER_VOTE(HttpStatus.NOT_FOUND, 4002, "해당 leader vote가 존재하지 않습니다."),
+
+    // 5000: Team Vote Error
+    NOT_FOUND_TEAM_CANDIDATE(HttpStatus.NOT_FOUND, 4001, "해당 team candidate가 존재하지 않습니다."),
+    NOT_FOUND_TEAM_VOTE(HttpStatus.NOT_FOUND, 4002, "해당 team vote가 존재하지 않습니다.");
 
 
     // 6000:
