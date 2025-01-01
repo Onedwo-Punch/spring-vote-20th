@@ -3,7 +3,7 @@ package com.ceos.vote.global.config;
 
 import com.ceos.vote.domain.auth.JwtAuthenticationFilter;
 import com.ceos.vote.domain.auth.JwtTokenProvider;
-import com.ceos.vote.domain.auth.service.UserDetailService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,22 +20,47 @@ import org.springframework.security.web.SecurityFilterChain;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
-//import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final AuthenticationConfiguration authenticationConfiguration;
-
-    private final UserDetailService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                        CorsConfiguration configuration = new CorsConfiguration();
+                        /*
+                        configuration.setAllowedOrigins(List.of(
+                                "http://localhost:3000", // 로컬 개발 환경
+                                "http://localhost:8080",
+                                "http://52.79.122.106", // EC2 서버
+                                "http://52.79.122.106:8081",
+                                "http://52.79.122.106:8080"
+                        ));
+                        */
+                        configuration.addAllowedOriginPattern("*"); // 테스트용 전체 허용
+                        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setMaxAge(3600L);
+
+                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+                        return configuration;
+                    }
+                })));
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -43,12 +68,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/hc", "/env","/**").permitAll()
+                        .requestMatchers("/hc", "/env", "/").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/login/**", "/auth/join/**", "/signup", "/user", "/user/sign-in").permitAll()
-                        .requestMatchers("/reissue").permitAll()
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll()
-                         .requestMatchers("/user/test").hasRole("user")
+                        .requestMatchers("api/v1/auth/**", "/reissue").permitAll()
+                        .requestMatchers("/api/v1/**").hasRole("user")
                         .anyRequest().authenticated())
                 .logout((logout) -> logout
                         .logoutSuccessUrl("/login")

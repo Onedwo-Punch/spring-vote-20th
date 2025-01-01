@@ -22,7 +22,7 @@ public class SignUpDto {
     private String password;
     private String userTeam;
     private String userPart;
-    private List<String> roles = new ArrayList<>();
+    private final List<String> roles = new ArrayList<>();
 
     public Users toEntity(String encodedPassword, List<String> roles){
         return Users.builder()
