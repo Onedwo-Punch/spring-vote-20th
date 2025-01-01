@@ -22,6 +22,7 @@ public class UserInfoDto {
     static public UserInfoDto from(Users users) {
         return UserInfoDto.builder()
                 .id(users.getId())
+                .password(users.getPassword())
                 .username(users.getUsername())
                 .email(users.getEmail())
                 .userTeam(users.getUserTeam())

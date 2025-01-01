@@ -92,13 +92,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-//  @Bean
-//    public WebSecurityCustomizer configure(){
-//        return (web) -> web.ignoring()
-//                .requestMatchers(toH2Console())
-//                .requestMatchers(new AntPathRequestMatcher("/static/**"));
-//    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
