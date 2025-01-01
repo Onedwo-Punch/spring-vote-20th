@@ -69,7 +69,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/hc", "/env", "/").permitAll()
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger/**", "/swagger-ui.html/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("api/v1/auth/**", "/reissue").permitAll()
                         .requestMatchers("/api/v1/**").hasRole("user")
