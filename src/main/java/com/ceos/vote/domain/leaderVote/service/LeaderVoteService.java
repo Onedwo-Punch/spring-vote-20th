@@ -1,5 +1,7 @@
 package com.ceos.vote.domain.leaderVote.service;
 
+import com.ceos.vote.domain.auth.service.UserDetailService;
+import com.ceos.vote.domain.auth.service.UserService;
 import com.ceos.vote.domain.leaderCandidate.entity.LeaderCandidate;
 import com.ceos.vote.domain.leaderCandidate.repository.LeaderCandidateRepository;
 import com.ceos.vote.domain.leaderCandidate.service.LeaderCandidateService;
@@ -29,17 +31,12 @@ public class LeaderVoteService {
     private final UserRepository userRepository;
     private final LeaderCandidateRepository leaderCandidateRepository;
     private final LeaderCandidateService leaderCandidateService;
-    private LeaderVoteRepository leaderVoteRepository;
+    private final UserDetailService userDetailService;
+    private final LeaderVoteRepository leaderVoteRepository;
 
     public LeaderVote findLeaderVoteByUserId(Long id) {
         return leaderVoteRepository.findByUserId(id)
                 .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_LEADER_VOTE));
-    }
-
-    // 추후 UserService에 통합 후 삭제
-    public Users findUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_EXCEPTION));
     }
 
     /*
@@ -68,7 +65,7 @@ public class LeaderVoteService {
      */
     @Transactional
     public void createLeaderVote(LeaderVoteCreateRequestDto requestDto) {
-        Users user = findUserById(requestDto.user_id());
+        Users user = userDetailService.findUserById(requestDto.user_id());
         LeaderCandidate leaderCandidate = leaderCandidateService.findLeaderCandidateById(requestDto.leader_candidate_id());
 
         final LeaderVote leaderVote = requestDto.toEntity(user, leaderCandidate);
