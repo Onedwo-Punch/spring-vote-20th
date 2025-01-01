@@ -71,9 +71,9 @@ public class SecurityConfig {
                         .requestMatchers("/hc", "/env","/**").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/login/**", "/auth/join/**", "/signup", "/user", "/user/sign-in").permitAll()
-                        .requestMatchers("/reissue").permitAll()
+                        .requestMatchers("api/v1/auth/**", "/reissue").permitAll()
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll()
-                         .requestMatchers("/user/test").hasRole("user")
+                         .requestMatchers("/user/test", "/api/v1/**").hasRole("user")
                         .anyRequest().authenticated())
                 .logout((logout) -> logout
                         .logoutSuccessUrl("/login")
