@@ -37,6 +37,10 @@ public class TeamVoteService {
                 .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_TEAM_VOTE));
     }
 
+    public Boolean checkTeamVoteByUserId(Long id) {
+        return teamVoteRepository.existsByUserId(id);
+    }
+
     /*
     전체 team candidate 조회
      */

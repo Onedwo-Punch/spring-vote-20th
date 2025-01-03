@@ -3,7 +3,6 @@ package com.ceos.vote.domain.auth.dto.request;
 import com.ceos.vote.domain.users.entity.Users;
 import com.ceos.vote.domain.users.enumerate.Part;
 import com.ceos.vote.domain.users.enumerate.Team;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SignUpDto {
+public class SignUpRequestDto {
 
     private String username;
     private String email;
