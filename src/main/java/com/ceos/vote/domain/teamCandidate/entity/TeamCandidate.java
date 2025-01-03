@@ -21,7 +21,7 @@ public class TeamCandidate {
     private Team teamName;
 
     @Builder
-    public TeamCandidate(Team name) {
-        this.teamName = name;
+    public TeamCandidate(Team team) {
+        this.teamName = team;
     }
 }

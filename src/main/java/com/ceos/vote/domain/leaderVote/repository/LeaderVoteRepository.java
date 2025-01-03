@@ -12,4 +12,6 @@ public interface LeaderVoteRepository extends JpaRepository<LeaderVote, Long> {
     Optional<LeaderVote> findByUserId(Long userId);
 
     Long countByLeaderCandidate(LeaderCandidate leaderCandidate);
+
+    boolean existsByUserId(Long userId);
 }
