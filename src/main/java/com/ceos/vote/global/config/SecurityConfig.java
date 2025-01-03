@@ -6,6 +6,7 @@ import com.ceos.vote.domain.auth.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -71,8 +72,8 @@ public class SecurityConfig {
                         .requestMatchers("/hc", "/env", "/").permitAll()
                         .requestMatchers("/swagger/**", "/swagger-ui.html/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("api/v1/auth/**", "/api/v1/**", "/reissue").permitAll()
-                        .requestMatchers("/api/v1/**").hasRole("user")
+                        .requestMatchers("/api/v1/auth/**",  "/reissue").permitAll()
+                        .requestMatchers("/api/v1/**").hasRole("USER")
                         .anyRequest().authenticated())
                 .logout((logout) -> logout
                         .logoutSuccessUrl("/login")
