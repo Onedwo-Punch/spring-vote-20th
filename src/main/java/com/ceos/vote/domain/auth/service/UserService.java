@@ -78,13 +78,25 @@ public class UserService {
 
     @Transactional
     public JwtToken signIn(String username, String password){
-        // 1. username + password 를 기반으로 Authentication 객체 생성
+
+        // username 존재여부 확인
+        Users users = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_USER));
+
+        // password 일치 여부 확인
+        if (!passwordEncoder.matches(password, users.getPassword())) {
+            throw new ApplicationException(ExceptionCode.INVALID_PASSWORD);
+        }
+
+        // username + password 를 기반으로 Authentication 객체 생성
         // 이때 authentication 은 인증 여부를 확인하는 authenticated 값이 false
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        // 2. 실제 검증. authenticate() 메서드를 통해 요청된 Member 에 대한 검증 진행
+
+        // 실제 검증. authenticate() 메서드를 통해 요청된 Member 에 대한 검증 진행
         // authenticate 메서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드 실행
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        // 3. 인증 정보를 기반으로 JWT 토큰 생성
+
+        // 인증 정보를 기반으로 JWT 토큰 생성
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 
         return jwtToken;
