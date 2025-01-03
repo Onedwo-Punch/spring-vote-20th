@@ -2,7 +2,7 @@ package com.ceos.vote.domain.auth.service;
 
 import com.ceos.vote.domain.auth.JwtToken;
 import com.ceos.vote.domain.auth.JwtTokenProvider;
-import com.ceos.vote.domain.auth.dto.request.SignUpDto;
+import com.ceos.vote.domain.auth.dto.request.SignUpRequestDto;
 import com.ceos.vote.domain.auth.dto.response.UserInfoDto;
 import com.ceos.vote.domain.users.dto.response.UserResponseDto;
 import com.ceos.vote.domain.users.entity.Users;
@@ -17,9 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -42,39 +39,33 @@ public class UserService {
         );
     }
 
-    public Long findUserIdByUsername(String username){
-        return userRepository.findByUsername(username)
-                .map(User::getId)
-                .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_USER));
-    }
-
     @Transactional
     //@Override
-    public UserInfoDto signUp(SignUpDto signUpDto){
+    public UserInfoDto signUp(SignUpRequestDto signUpRequestDto){
 
         // 사용자 이름 중복 확인
-        if(userRepository.existsByUsername(signUpDto.getUsername())){
+        if(userRepository.existsByUsername(signUpRequestDto.getUsername())){
             throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
         }
 
         // 사용자 이메일 중복 확인
-        if(userRepository.existsByEmail(signUpDto.getEmail())){
+        if(userRepository.existsByEmail(signUpRequestDto.getEmail())){
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
-        log.debug("PASSWORD{}", signUpDto.getPassword());
+        log.debug("PASSWORD{}", signUpRequestDto.getPassword());
 
         //비밀번호 유효성 검사
-        if (signUpDto.getPassword() == null || signUpDto.getPassword().isEmpty()) {
+        if (signUpRequestDto.getPassword() == null || signUpRequestDto.getPassword().isEmpty()) {
         throw new ApplicationException(ExceptionCode.INVALID_PASSWORD);
         }
 
         //password 암호화
-        String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
+        String encodedPassword = passwordEncoder.encode(signUpRequestDto.getPassword());
         log.debug("encodedPassword{}", encodedPassword);
 
         //사용자 저장
-        Users newUser = userRepository.save(signUpDto.toEntity(encodedPassword));
+        Users newUser = userRepository.save(signUpRequestDto.toEntity(encodedPassword));
         return UserInfoDto.from(newUser);
     }
 
