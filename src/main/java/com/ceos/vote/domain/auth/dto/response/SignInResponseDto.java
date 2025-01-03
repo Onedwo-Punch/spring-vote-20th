@@ -16,16 +16,18 @@ public class SignInResponseDto {
     private String grantType;
     private String accessToken;
     private String refreshToken;
+    private Long userId;
     private Part userPart;
     private Boolean isVotingLeader;
     private Boolean isVotingTeam;
 
-    public static SignInResponseDto from(JwtToken jwtToken, Part userPart, Boolean isVotingLeader, Boolean isVotingTeam) {
+    public static SignInResponseDto from(JwtToken jwtToken, Users user, Boolean isVotingLeader, Boolean isVotingTeam) {
         return SignInResponseDto.builder()
                 .grantType(jwtToken.getGrantType())
                 .accessToken(jwtToken.getAccessToken())
                 .refreshToken(jwtToken.getRefreshToken())
-                .userPart(userPart)
+                .userId(user.getId())
+                .userPart(user.getUserPart())
                 .isVotingLeader(isVotingLeader)
                 .isVotingTeam(isVotingTeam)
                 .build();
