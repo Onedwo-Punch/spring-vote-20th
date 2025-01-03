@@ -1,5 +1,6 @@
 package com.ceos.vote.domain.teamCandidate.entity;
 
+import com.ceos.vote.domain.users.enumerate.Team;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,11 +16,12 @@ public class TeamCandidate {
     @Column(name = "team_candidate_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column
-    private String name;
+    private Team teamName;
 
     @Builder
-    public TeamCandidate(String name) {
-        this.name = name;
+    public TeamCandidate(Team name) {
+        this.teamName = name;
     }
 }
