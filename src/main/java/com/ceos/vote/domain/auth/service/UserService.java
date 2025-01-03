@@ -6,6 +6,7 @@ import com.ceos.vote.domain.auth.dto.request.SignUpRequestDto;
 import com.ceos.vote.domain.auth.dto.response.UserInfoDto;
 import com.ceos.vote.domain.users.dto.response.UserResponseDto;
 import com.ceos.vote.domain.users.entity.Users;
+import com.ceos.vote.domain.users.enumerate.Part;
 import com.ceos.vote.domain.users.repository.UserRepository;
 import com.ceos.vote.global.exception.ApplicationException;
 import com.ceos.vote.global.exception.ExceptionCode;
@@ -37,6 +38,12 @@ public class UserService {
                 users.getUserTeam().name(),
                 users.getUsername()
         );
+    }
+
+    public Long findUserIdByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(Users::getId)
+                .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_USER));
     }
 
     @Transactional
@@ -81,5 +88,11 @@ public class UserService {
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 
         return jwtToken;
+    }
+
+    public Part findUserPartByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(Users::getUserPart) // User 엔티티에서 Part 필드 가져오기
+                .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_USER));
     }
 }
