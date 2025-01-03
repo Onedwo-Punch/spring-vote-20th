@@ -11,6 +11,7 @@ import com.ceos.vote.domain.teamVote.service.TeamVoteService;
 import com.ceos.vote.domain.users.enumerate.Part;
 import com.ceos.vote.domain.utils.SecurityUtil;
 import com.ceos.vote.global.common.response.CommonResponse;
+import com.ceos.vote.global.exception.ApplicationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,8 +47,20 @@ public class AuthController {
         JwtToken jwtToken = userService.signIn(username, password);
 
         Long userId = userService.findUserIdByUsername(username);
-        Boolean isVotingLeader = leaderVoteService.findLeaderVoteByUserId(userId) != null;
-        Boolean isVotingTeam = teamVoteService.findTeamVoteByUserId(userId) != null;
+        Boolean isVotingLeader = false;
+            try {
+                leaderVoteService.checkLeaderVoteByUserId(userId);
+                isVotingLeader = true;
+            } catch (ApplicationException e) {
+                isVotingLeader = false;
+            }
+        Boolean isVotingTeam = false;
+            try {
+                teamVoteService.checkTeamVoteByUserId(userId);
+                isVotingTeam = true;
+            } catch (ApplicationException e) {
+                isVotingTeam = false;
+            }
         Part userpart = userService.findUserPartByUsername(username);
         SignInResponseDto responseDto = SignInResponseDto.from(jwtToken, userpart, isVotingLeader, isVotingTeam);
         return new CommonResponse<>(responseDto, "로그인에 성공헀습니다.");
