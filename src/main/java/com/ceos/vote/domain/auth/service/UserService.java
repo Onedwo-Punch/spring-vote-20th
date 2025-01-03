@@ -42,6 +42,12 @@ public class UserService {
         );
     }
 
+    public Long findUserIdByUsername(String username){
+        return userRepository.findByUsername(username)
+                .map(User::getId)
+                .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_USER));
+    }
+
     @Transactional
     //@Override
     public UserInfoDto signUp(SignUpDto signUpDto){

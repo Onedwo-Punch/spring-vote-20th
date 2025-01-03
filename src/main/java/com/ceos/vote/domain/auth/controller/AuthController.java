@@ -29,23 +29,26 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    public CommonResponse<UserInfoDto> signUp(@Valid @RequestBody SignUpDto signUpDto) {
-        log.debug("Request body: ", signUpDto);
-        UserInfoDto userInfoDto = userService.signUp(signUpDto);
-        return new CommonResponse<>(userInfoDto, "회원가입에 성공했습니다.");
+    public CommonResponse<Void> signUp(@Valid @RequestBody SignUpDto signUpDto) {
+        //log.debug("Request body: ", signUpDto);
+        userService.signUp(signUpRequestDto);
+        return new CommonResponse<>("회원가입에 성공했습니다.");
     }
 
     @PostMapping("/sign-in")
-    public CommonResponse<JwtToken> signIn(@RequestBody SignInDto signinDto){
+    public CommonResponse<SignInResponseDto> signIn(@RequestBody SignInDto signinDto){
 
         String username = signinDto.getUsername();
         String password = signinDto.getPassword();
         JwtToken jwtToken = userService.signIn(username, password);
 
-        AuthController.log.info("request name = {}, password = {}", username, password);
-        AuthController.log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
+        Long userId = userService.findUserIdByUsername(username);
+        Boolean isVotingLeader = leaderVoteService.findLeaderVoteByUserId(userId) != null;
+        Boolean isVotingTeam = teamVoteService.findTeamVoteByUserId(userId) != null;
 
-        return new CommonResponse<>(jwtToken, "로그인에 성공헀습니다.");
+        SignInResponseDto signInResponseDto = SignInResponseDto.from(jwtToken, isVotingLeader, isVotingTeam);
+
+        return new CommonResponse<>(signInResponseDto, "로그인에 성공헀습니다.");
     }
 
     @PostMapping("/test")
