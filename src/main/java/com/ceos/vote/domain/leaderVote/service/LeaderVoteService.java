@@ -34,7 +34,7 @@ public class LeaderVoteService {
     private final LeaderVoteRepository leaderVoteRepository;
 
     public boolean checkLeaderVoteByUserId(Long id) {
-        return leaderVoteRepository.findByUserId(id).isPresent();
+        return leaderVoteRepository.existsByUserId(id);
     }
 
     public LeaderVote findLeaderVoteByUserId(Long id) {

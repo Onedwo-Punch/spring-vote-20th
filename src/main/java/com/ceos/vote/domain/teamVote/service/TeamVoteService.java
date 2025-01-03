@@ -38,7 +38,7 @@ public class TeamVoteService {
     }
 
     public Boolean checkTeamVoteByUserId(Long id) {
-        return teamVoteRepository.findByUserId(id).isPresent();
+        return teamVoteRepository.existsByUserId(id);
     }
 
     /*

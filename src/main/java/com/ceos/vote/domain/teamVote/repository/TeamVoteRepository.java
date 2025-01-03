@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface TeamVoteRepository extends JpaRepository<TeamVote, Long> {
     Optional<TeamVote> findByUserId(Long userId);
     Long countByTeamCandidate(TeamCandidate teamCandidate);
+
+    Boolean existsByUserId(Long userId);
 }

@@ -47,20 +47,8 @@ public class AuthController {
         JwtToken jwtToken = userService.signIn(username, password);
 
         Long userId = userService.findUserIdByUsername(username);
-        Boolean isVotingLeader = false;
-            try {
-                leaderVoteService.checkLeaderVoteByUserId(userId);
-                isVotingLeader = true;
-            } catch (ApplicationException e) {
-                isVotingLeader = false;
-            }
-        Boolean isVotingTeam = false;
-            try {
-                teamVoteService.checkTeamVoteByUserId(userId);
-                isVotingTeam = true;
-            } catch (ApplicationException e) {
-                isVotingTeam = false;
-            }
+        Boolean isVotingLeader = leaderVoteService.checkLeaderVoteByUserId(userId);
+        Boolean isVotingTeam = teamVoteService.checkTeamVoteByUserId(userId);
         Part userpart = userService.findUserPartByUsername(username);
         SignInResponseDto responseDto = SignInResponseDto.from(jwtToken, userpart, isVotingLeader, isVotingTeam);
         return new CommonResponse<>(responseDto, "로그인에 성공헀습니다.");
