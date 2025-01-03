@@ -9,7 +9,7 @@ public record TeamCandidateResponseDto (
     public static TeamCandidateResponseDto from(TeamCandidate teamCandidate) {
         return new TeamCandidateResponseDto(
                 teamCandidate.getId(),
-                teamCandidate.getName()
+                teamCandidate.getTeamName().getDescription()
         );
     }
 }

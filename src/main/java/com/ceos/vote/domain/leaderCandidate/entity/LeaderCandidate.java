@@ -19,6 +19,7 @@ public class LeaderCandidate extends BaseEntity {
     @Column(name = "leader_candidate_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 32)
     private Part part;
 

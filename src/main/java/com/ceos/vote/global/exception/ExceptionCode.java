@@ -21,10 +21,11 @@ public enum ExceptionCode {
     INVALID_SORT_EXCEPTION(HttpStatus.BAD_REQUEST, 2007, "올바르지 않은 정렬 값입니다."),
     BAD_REQUEST_ERROR(HttpStatus.BAD_REQUEST, 2008, "잘못된 요청입니다."),
 
-    // 3000: USER
+    // 3000: USER/Auth
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, 3001, "해당 회원을 찾을 수 없습니다."),
     INVALID_USER_CREDENTIALS(HttpStatus.UNAUTHORIZED, 3002, "잘못된 사용자 인증 정보입니다."),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, 3003, "비밀번호를 찾을 수 없습니다."),
+    NOT_FOUND_USERNAME(HttpStatus.NOT_FOUND, 3004, "해당 아이디를 찾을 수 없습니다."),
 
     // 4000: Leader Vote Error
     NOT_FOUND_LEADER_CANDIDATE(HttpStatus.NOT_FOUND, 4001, "해당 leader candidate가 존재하지 않습니다."),
