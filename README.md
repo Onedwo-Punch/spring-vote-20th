@@ -1,5 +1,37 @@
 # spring_vote_20th
 
+## ERD
+전체 ERD
+
+<img width="747" alt="스크린샷 2025-01-05 오후 2 29 35" src="https://github.com/user-attachments/assets/4ee1f4e3-8a45-42b9-ad0a-5ca8425de985" />
+
+- 유저, 파트장 투표, 팀 투표를 분리시켜 구성하였다.
+
+### User
+사용자에 관한 테이블
+
+<img width="344" alt="스크린샷 2025-01-05 오후 2 57 58" src="https://github.com/user-attachments/assets/6b699059-c602-4d4c-bf5e-169549a3e821" />
+
+- 사용자는 name과 password를 통해 로그인을 할 수 있다.
+
+### Leader Vote
+파트장 투표에 관한 테이블
+
+<img width="800" alt="스크린샷 2025-01-05 오후 4 07 38" src="https://github.com/user-attachments/assets/48147c43-fd44-4a0f-87c7-32dbf82b2571" />
+
+- Leader Candidate에는 후보자의 이름과 파트 그리고 후보자 id가 있다.
+- Leader Vote는 투표한 사용자의 id와 사용자가 투표한 후보자 id 그리고 투표 고유 id가 있다.
+- 사용자 id와 후보자 id는 외래키로 받아왔다.
+
+### Team Vote
+팀 투표에 관한 테이블
+
+<img width="594" alt="스크린샷 2025-01-05 오후 4 12 14" src="https://github.com/user-attachments/assets/084b613c-c84b-467a-a327-b37d86c28b6a" />
+
+- Team Candidate는 팀명과 팀 고유 id로 구성되어 있다.
+- Team Vote는 투표한 사용자 id, 사용자가 투표한 팀 id 그리고 투표 고유 id가 있다.
+- 사용자 id와 사용자 id는 외래키로 받아왔다.
+
 ## 배포 - blue green 무중단 배포
 ### blue green 배포란?
 https://github.com/user-attachments/assets/d603aaa1-c8fc-4ef2-829a-629b2a35b09e
@@ -140,3 +172,9 @@ jobs:
 
 **보안 규칙**
 1. 8080 port, 8081 port를 번갈아가며 사용하기 때문에 두 port에 대한 inbound 규칙 추가
+
+**비밀번호를 인식하지 못하는 문제**
+1. 로그인 기능을 먼저 구현한 뒤, 테이블에 직접 데이터를 넣고 로그인 테스트를 해보았으나 비밀번호를 인식하지 못하여 실패
+2. 비밀번호가 암호화되어 입력되어야 하는데 직접 데이터를 넣었기 때문에 암호화되지 않은 채로 들어가 문제가 생겼음을 인식
+3. 회원가입 구현 후에 다시 로그인을 시도했으나 여전히 비밀번호를 인식하지 못함
+4. import문을 잘못 가지고 왔다는 것을 깨달음... → 해결..^_^
