@@ -37,6 +37,10 @@ public class TeamVoteService {
                 .orElseThrow(() -> new ApplicationException(ExceptionCode.NOT_FOUND_TEAM_VOTE));
     }
 
+    public Boolean checkTeamVoteByUserId(Long id) {
+        return teamVoteRepository.existsByUserId(id);
+    }
+
     /*
     전체 team candidate 조회
      */
@@ -95,7 +99,7 @@ public class TeamVoteService {
 
         // 각 후보의 투표 결과 반환 및 득표수 내림차순 정렬
         return teamCandidates.stream()
-                .map(candidate -> TeamResultResponseDto.from(candidate.getName(), teamVoteRepository.countByTeamCandidate(candidate)))
+                .map(candidate -> TeamResultResponseDto.from(candidate.getTeamName().getDescription(), teamVoteRepository.countByTeamCandidate(candidate)))
                 .sorted(Comparator.comparingLong(TeamResultResponseDto::getVoteCount).reversed()) // 내림차순 정렬
                 .toList();
     }

@@ -1,12 +1,19 @@
 package com.ceos.vote.domain.auth.controller;
 
 import com.ceos.vote.domain.auth.JwtToken;
-import com.ceos.vote.domain.auth.dto.request.SignInDto;
-import com.ceos.vote.domain.auth.dto.request.SignUpDto;
+import com.ceos.vote.domain.auth.dto.request.SignInRequestDto;
+import com.ceos.vote.domain.auth.dto.request.SignUpRequestDto;
+import com.ceos.vote.domain.auth.dto.response.SignInResponseDto;
 import com.ceos.vote.domain.auth.dto.response.UserInfoDto;
+import com.ceos.vote.domain.auth.service.UserDetailService;
 import com.ceos.vote.domain.auth.service.UserService;
+import com.ceos.vote.domain.leaderVote.service.LeaderVoteService;
+import com.ceos.vote.domain.teamVote.service.TeamVoteService;
+import com.ceos.vote.domain.users.entity.Users;
+import com.ceos.vote.domain.users.enumerate.Part;
 import com.ceos.vote.domain.utils.SecurityUtil;
 import com.ceos.vote.global.common.response.CommonResponse;
+import com.ceos.vote.global.exception.ApplicationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.Map;
-import java.util.HashMap;
 
-import static java.rmi.server.LogStream.log;
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Slf4j
 @RestController
@@ -27,25 +30,33 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class AuthController {
 
     private final UserService userService;
+    private final LeaderVoteService leaderVoteService;
+    private final TeamVoteService teamVoteService;
+    private final UserDetailService userDetailService;
 
+    // 회원가입
     @PostMapping("/sign-up")
-    public CommonResponse<UserInfoDto> signUp(@Valid @RequestBody SignUpDto signUpDto) {
-        log.debug("Request body: ", signUpDto);
-        UserInfoDto userInfoDto = userService.signUp(signUpDto);
+    public CommonResponse<UserInfoDto> signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
+        log.debug("Request body: ", signUpRequestDto);
+        UserInfoDto userInfoDto = userService.signUp(signUpRequestDto);
         return new CommonResponse<>(userInfoDto, "회원가입에 성공했습니다.");
     }
 
     @PostMapping("/sign-in")
-    public CommonResponse<JwtToken> signIn(@RequestBody SignInDto signinDto){
+    public CommonResponse<SignInResponseDto> signIn(@RequestBody SignInRequestDto signinRequestDto){
 
-        String username = signinDto.getUsername();
-        String password = signinDto.getPassword();
+        String username = signinRequestDto.getUsername();
+        String password = signinRequestDto.getPassword();
         JwtToken jwtToken = userService.signIn(username, password);
 
-        AuthController.log.info("request name = {}, password = {}", username, password);
-        AuthController.log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
+        Long userId = userService.findUserIdByUsername(username);
+        Boolean isVotingLeader = leaderVoteService.checkLeaderVoteByUserId(userId);
+        Boolean isVotingTeam = teamVoteService.checkTeamVoteByUserId(userId);
 
-        return new CommonResponse<>(jwtToken, "로그인에 성공헀습니다.");
+        Users user = userDetailService.findUserByUsername(username);
+
+        SignInResponseDto responseDto = SignInResponseDto.from(jwtToken, user, isVotingLeader, isVotingTeam);
+        return new CommonResponse<>(responseDto, "로그인에 성공헀습니다.");
     }
 
     @PostMapping("/test")

@@ -1,7 +1,6 @@
 package com.ceos.vote.domain.leaderVote.service;
 
 import com.ceos.vote.domain.auth.service.UserDetailService;
-import com.ceos.vote.domain.auth.service.UserService;
 import com.ceos.vote.domain.leaderCandidate.entity.LeaderCandidate;
 import com.ceos.vote.domain.leaderCandidate.repository.LeaderCandidateRepository;
 import com.ceos.vote.domain.leaderCandidate.service.LeaderCandidateService;
@@ -33,6 +32,10 @@ public class LeaderVoteService {
     private final LeaderCandidateService leaderCandidateService;
     private final UserDetailService userDetailService;
     private final LeaderVoteRepository leaderVoteRepository;
+
+    public boolean checkLeaderVoteByUserId(Long id) {
+        return leaderVoteRepository.existsByUserId(id);
+    }
 
     public LeaderVote findLeaderVoteByUserId(Long id) {
         return leaderVoteRepository.findByUserId(id)
