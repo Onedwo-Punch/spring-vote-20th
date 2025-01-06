@@ -5,9 +5,11 @@ import com.ceos.vote.domain.auth.dto.request.SignInRequestDto;
 import com.ceos.vote.domain.auth.dto.request.SignUpRequestDto;
 import com.ceos.vote.domain.auth.dto.response.SignInResponseDto;
 import com.ceos.vote.domain.auth.dto.response.UserInfoDto;
+import com.ceos.vote.domain.auth.service.UserDetailService;
 import com.ceos.vote.domain.auth.service.UserService;
 import com.ceos.vote.domain.leaderVote.service.LeaderVoteService;
 import com.ceos.vote.domain.teamVote.service.TeamVoteService;
+import com.ceos.vote.domain.users.entity.Users;
 import com.ceos.vote.domain.users.enumerate.Part;
 import com.ceos.vote.domain.utils.SecurityUtil;
 import com.ceos.vote.global.common.response.CommonResponse;
@@ -30,6 +32,7 @@ public class AuthController {
     private final UserService userService;
     private final LeaderVoteService leaderVoteService;
     private final TeamVoteService teamVoteService;
+    private final UserDetailService userDetailService;
 
     // 회원가입
     @PostMapping("/sign-up")
@@ -49,8 +52,10 @@ public class AuthController {
         Long userId = userService.findUserIdByUsername(username);
         Boolean isVotingLeader = leaderVoteService.checkLeaderVoteByUserId(userId);
         Boolean isVotingTeam = teamVoteService.checkTeamVoteByUserId(userId);
-        Part userpart = userService.findUserPartByUsername(username);
-        SignInResponseDto responseDto = SignInResponseDto.from(jwtToken, userpart, isVotingLeader, isVotingTeam);
+
+        Users user = userDetailService.findUserByUsername(username);
+
+        SignInResponseDto responseDto = SignInResponseDto.from(jwtToken, user, isVotingLeader, isVotingTeam);
         return new CommonResponse<>(responseDto, "로그인에 성공헀습니다.");
     }
 
