@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class CeosVoteBeApplication {
 
+    //test
     public static void main(String[] args) {
         SpringApplication.run(CeosVoteBeApplication.class, args);
     }
